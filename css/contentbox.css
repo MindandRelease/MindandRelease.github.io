@@ -1,0 +1,174 @@
+﻿.section-list {width:100%;height:auto;max-height: 703px;margin:0;padding:27px 0 0;box-sizing:border-box;overflow-y:auto;overflow-x:hidden;text-align:center;}
+@media all and (max-width: 960px) 
+{
+   .section-list {max-height: 533px;} 
+}
+.section-list div{cursor:pointer;margin:0 15px 19px;padding:0;display:inline-block;background:#acacac}
+.section-list div:hover img {opacity:0.5;transition: all 0.2s ease-in-out;}
+.section-list div img {border:#cdcdcd 1px solid;width:100%; max-width:250px; margin:0; box-sizing:border-box;display:block;-webkit-box-shadow: 0px 5px 17px rgba(0, 0, 0,0.2);-moz-box-shadow: 0px 5px 17px rgba(0, 0, 0,0.2);box-shadow: 0px 5px 17px rgba(0, 0, 0,0.2);}
+
+.is-section:hover .is-section-tool {opacity:1;transition: all 0.2s ease-in-out;}
+.is-box {-webkit-transition: all ease 0.2s;-moz-transition: all ease 0.2s;-ms-transition: all ease 0.2s;-o-transition: all ease 0.2s;transition: all ease 0.2s;}
+.is-module {width:100%;height:100%;min-height:100px;position:absolute;top:0;left:0;background-image:url(../images/module.png);background-repeat:no-repeat;background-position:50%;background-color:rgba(0,0,0,0.05);}
+.is-placeholder {width:100%;height:200px;position:relative;top:0;left:0;background-image:url(../images/placeholder.png);background-repeat:no-repeat;background-position:50%;background-color:rgba(0,0,0,0.05);}
+
+.is-section-tool {z-index:1;opacity:0;position:absolute !important;top:0px;left:0px;margin:0px;margin-left:70px;width:100%;height:28px;white-space:nowrap;}
+.is-section-tool > div {width:28px;height:28px;box-sizing:border-box;padding:0px;font-size:13px;text-align:center;line-height:28px;float:left;}
+.is-section-edit {cursor:pointer;border-bottom-left-radius:5px;background:rgb(0, 172, 214);color:#fff;}
+.is-section-remove {cursor:pointer;border-bottom-right-radius:5px;background:rgb(247, 99, 46);color:#fff;}
+.is-section-edit *, .is-section-remove * {color:#fff !important;}
+
+.is-tab-links > a {padding: 7px 14px;font-size: 13px;text-decoration:underline;color:#333;cursor:pointer;text-transform: uppercase;letter-spacing: 1px;border-radius: 12px;margin:0;line-height: 3;}
+.is-tab-links > a.active {background:#2C2C2C;color:#fff;text-decoration:none;cursor:default;}
+.is-tab-contents > div {display:none;overflow-y:auto;overflow-x:hidden;width:100%;height:auto;max-height: 500px;box-sizing:border-box;}
+
+#inpMasterHead, #inpPageHead {border: rgba(187, 187, 187, 0.5) 1px solid;}
+
+.is-colorbuttons > div {padding:0px}
+.is-colorbuttons > div > button {height:30px;border-radius:0}
+
+/* Already defined in base.css. Used this only if base.css is not used.*/
+.md-modal .md-title {font-size:18px;text-align:center;}
+.md-modal .is-boxes {min-height:inherit}
+.md-modal .is-box-2 {height:inherit;min-height:inherit;padding:5px;}
+.md-modal .is-box-3 {height:inherit;min-height:inherit;padding:5px;}
+.md-modal .is-box-4 {height:inherit;min-height:inherit;padding:5px;}
+.md-modal .is-box-6 {height:inherit;min-height:inherit;padding:5px;}
+.md-modal .is-box-12 {height:inherit;min-height:inherit;padding:5px;}
+.md-footer {border-top-left-radius:0;border-top-right-radius:0;}
+
+.cl-button {padding: 0 20px;font-size: 14px;line-height: 35px;height: 35px; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; border-radius: 4px;letter-spacing: 1px;display:inline-block; margin-bottom: 0;font-weight: normal;text-align: center;text-decoration: none;vertical-align: middle;cursor: pointer;background-image: none; border: 1px solid transparent;white-space: nowrap;-webkit-transition: all 0.1s ease-in-out;transition: all 0.1s ease-in-out;}
+.cl-button-large {padding: 0 30px;font-size: 15px;line-height: 45px;height: 45px;}
+.cl-button-small {padding: 0 10px;font-size: 12px;line-height: 25px;height: 25px;}
+.cl-button-full {width:100%;height:50px;line-height:50px;margin:0;padding:0;}
+.cl-button.uppercase {font-size: 11px;text-transform: uppercase;}
+.cl-button-large.uppercase {font-size: 14px;text-transform: uppercase;}
+.cl-button-small.uppercase {font-size: 10px;text-transform: uppercase;}
+.cl-button {color: #333333;background-color: #eeeeee;}
+.cl-button:hover {color: #111;background-color: #f5f5f5;}
+.cl-button-primary {color: #ffffff;background-color: #08c9b9;}
+.cl-button-primary:hover {color: #ffffff;background-color: #07b0a2;border-color: #07b0a2;}
+/***********/
+
+.is-opacity-20 {opacity: 1;}
+.is-opacity-25 {opacity: 1;}
+.is-opacity-30 {opacity: 1;}
+.is-opacity-35 {opacity: 1;}}
+.is-opacity-40 {opacity: 1;}
+.is-opacity-45 {opacity: 1;}
+.is-opacity-50 {opacity: 1;}
+.is-opacity-55 {opacity: 1;}
+.is-opacity-60 {opacity: 1;}
+.is-opacity-65 {opacity: 1;}
+.is-opacity-70 {opacity: 1;}
+.is-opacity-75 {opacity: 1;}
+.is-opacity-80 {opacity: 1;}
+.is-opacity-85 {opacity: 1;}
+.is-opacity-90 {opacity: 1;}
+.is-opacity-95 {opacity: 1;}
+
+.is-opacity-20 .is-container > div > div:not(.row-tool) {opacity: 0.2;}
+.is-opacity-25 .is-container > div > div:not(.row-tool) {opacity: 0.25;}
+.is-opacity-30 .is-container > div > div:not(.row-tool) {opacity: 0.3;}
+.is-opacity-35 .is-container > div > div:not(.row-tool) {opacity: 0.35;}
+.is-opacity-40 .is-container > div > div:not(.row-tool) {opacity: 0.4;}
+.is-opacity-45 .is-container > div > div:not(.row-tool) {opacity: 0.45;}
+.is-opacity-50 .is-container > div > div:not(.row-tool) {opacity: 0.5;}
+.is-opacity-55 .is-container > div > div:not(.row-tool) {opacity: 0.55;}
+.is-opacity-60 .is-container > div > div:not(.row-tool) {opacity: 0.6;}
+.is-opacity-65 .is-container > div > div:not(.row-tool) {opacity: 0.65;}
+.is-opacity-70 .is-container > div > div:not(.row-tool) {opacity: 0.7;}
+.is-opacity-75 .is-container > div > div:not(.row-tool) {opacity: 0.75;}
+.is-opacity-80 .is-container > div > div:not(.row-tool) {opacity: 0.8;}
+.is-opacity-85 .is-container > div > div:not(.row-tool) {opacity: 0.85;}
+.is-opacity-90 .is-container > div > div:not(.row-tool) {opacity: 0.9;}
+.is-opacity-95 .is-container > div > div:not(.row-tool) {opacity: 0.95;}
+
+/* ADJUSTMENT */
+#md-view-html {height: 90% !important}
+
+
+/* DARK */
+.md-content { background: rgba(0,0,0,0.9); color: rgba(255,255,255,0.5); }
+.md-modal-handle { color: rgba(255,255,255,0.5); }
+.md-modal .md-title { color: rgba(255,255,255,0.5); }
+.md-modal textarea { background-color: rgba(0,0,0,0.9); color: rgba(255,255,255,0.6); border: rgba(150, 150, 150, 0.5) 1px solid;overflow-x: hidden; }
+.md-modal select { background: rgba(255,255,255,0.25); color: rgba(255,255,255,0.6); }
+.md-modal select option {color:#000;}
+.md-modal input[type='checkbox'] {opacity:0.7}
+.md-modal .md-label {background:none;color: rgba(255,255,255,0.6);}
+.md-modal input[type='text'] { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.6); border: none; }
+
+.md-modal button { background: rgba(150, 150, 150, 0.17); color: rgba(255,255,255,0.5); 
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+    }
+.md-modal button:hover { background-color: rgba(150, 150, 150, 0.25); color: rgba(255,255,255,0.6); }
+.md-footer button { background: rgba(0,0,0,0.75); color: rgba(255,255,255,0.6); border-top-left-radius: 0; border-top-right-radius: 0;  }
+.md-footer button:hover {background: rgba(0,0,0,0.7); color: rgba(255,255,255,0.7); }
+
+.md-modal button.cl-button-footer {     
+    background: rgba(100, 100, 100, 0.45); color: rgba(255,255,255,0.6); font-size: 12px; text-transform:uppercase }
+.md-modal button.cl-button-footer:hover  {
+    background-color: rgba(100, 100, 100, 0.55); color: rgba(255,255,255,0.7); }
+
+.is-tab-links > a { color: rgba(255,255,255,0.5); }
+.is-tab-links > a.active { background: #2C2C2C; color: rgba(255,255,255,0.55); }
+
+#rte-toolbar { background:none;border:none; }
+#rte-toolbar button { background-color: rgba(0,0,0,0.9); color: rgba(255,255,255,0.7); }
+#rte-toolbar button:hover { background-color: rgba(0, 0, 0, 0.6); color: rgba(255,255,255,0.9); }
+.rte-pop { background:black;border:none;z-index:10000;color:#666 }
+.rte-pop button { background-color: rgba(0,0,0,0.8) ; color: rgba(255,255,255,0.7); }
+.rte-pop button:hover { background-color: rgba(0, 0, 0, 0.6) ; color: rgba(255,255,255,0.9); }
+
+#ifrHeadings, #ifrFonts, #ifrFontSize {background: #fff;}
+
+#divTool {background-color: rgb(191, 191, 191);}
+#divSnippetList { border-bottom: transparent 55px solid;}
+#divSnippetList div { background-color: rgba(0, 0, 0, 0.45); }
+#divSnippetList div img { opacity: 0.85;}
+#divSnippetList div:hover img { opacity: 0.95;}
+#lnkToolOpen { background-color: rgb(191, 191, 191); color: rgb(0, 0, 0); }
+#divTool select { opacity:0.85;display:none!important }
+
+.section-list {background:rgba(255, 255, 255, 0.96);}
+.section-list div{background:transparent}
+.section-list div img {opacity:0.9;}
+.section-list div:hover img {opacity:1;}
+.section-list div img {border:none;}
+
+#btnInsertPlh, #btnDelRowCancel,  #btnDelSectionCancel, #btnTextColorOk, #btnTextColorClear { background-color: rgba(255,255,255,0.2); color: rgba(255,255,255,0.5); border-color: transparent;  }
+#btnInsertPlh:hover, #btnDelRowCancel:hover, #btnDelSectionCancel:hover, #btnTextColorOk:hover, #btnTextColorClear:hover { background-color: rgba(255,255,255,0.25); color: rgba(255,255,255,0.6); border-color: transparent; }
+#btnDelRowOk, #btnDelSectionOk { background-color: rgba(8, 201, 185, 0.51); color: rgba(255,255,255,0.5); border-color: transparent;  }
+#btnDelRowOk:hover,  #btnDelSectionOk:hover { background-color: rgba(8, 201, 185, 0.6); color: rgba(255,255,255,0.6); border-color: transparent; }
+
+#inpTextColor {background-color: rgba(0,0,0,1);color:rgba(255,255,255,0.3);border:none;}
+#inpSectColor {padding: 2px 7px;
+    width: 180px;
+    height: 36px;
+    margin: 5px;
+    display: inline-block;
+    border:#dcdcdc 1px solid;
+    background-color: rgba(0,0,0,1);color:rgba(255,255,255,0.3);border:none;}
+    
+.md-tabs > * {background:rgba(0, 0, 0, 1);color:rgba(255, 255, 255, 0.7);}
+.md-tabs > .active {background:rgba(255,255,255,0.7);color:rgba(0, 0, 0, 1);}
+
+#infoSource {
+    background: #2d2d2d;
+}
+.md-footer button.primary:hover {
+    background: rgba(0,0,0,0.7);
+    color: rgba(255,255,255,0.7);
+}
+.md-footer button.secondary {
+    background: rgba(39, 39, 39, 0.75); 
+    color: rgba(255,255,255,0.6);
+}
+.md-footer button.secondary:hover {
+    background: rgba(39, 39, 39, 0.7); 
+    color: rgba(255,255,255,0.7);
+}
+/* #btnInsertPlh:hover, #btnDelRowCancel:hover, #btnTextColorOk:hover, #btnTextColorClear:hover, */ .md-pick-tag:hover {border-color:#4e4e4e}
