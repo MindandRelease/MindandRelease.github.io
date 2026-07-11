@@ -1,0 +1,37 @@
+name: Osho Haberlerini Guncelle
+
+on:
+  schedule:
+    - cron: "0 */12 * * *" # Her 12 saatte bir otomatik tetikler
+  workflow_dispatch: # GitHub üzerinden senin manuel olarak butona basıp başlatabilmen için
+
+jobs:
+  veri_cek_ve_kaydet:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Botun yeni haberler.json dosyasını sitene kaydedebilmesi için gerekli izin
+    
+    steps:
+    - name: Sitenin Dosyalarını Al
+      uses: actions/checkout@v4
+      
+    - name: Python'u Hazırla
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+        
+    - name: İşçinin Alet Çantasını Yükle (requirements.txt)
+      run: pip install -r requirements.txt
+      
+    - name: Haber Botunu Çalıştır
+      env:
+        NEWS_API_KEY: ${{ secrets.NEWS_API_KEY }}
+        GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      run: python fetch_news.py
+      
+    - name: Çıkan Sonucu (haberler.json) Sitene Kaydet
+      run: |
+        git config --global user.name "Haber Botu"
+        git config --global user.email "bot@otomatik.com"
+        git add haberler.json
+        git diff --quiet && git diff --staged --quiet || (git commit -m "Haberler güncellendi" && git push)
