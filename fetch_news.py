@@ -1,39 +1,38 @@
 import os, json, requests
+import xml.etree.ElementTree as ET
 import google.generativeai as genai
 
-# Şifreleri çek
+# Şifreleri al
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
 genai.configure(api_key=GEMINI_API_KEY)
 model = genai.GenerativeModel('gemini-1.5-flash')
 
-print("Reddit JSON API'sine bağlanılıyor...")
+print("RSS-Bridge üzerinden Reddit akışı çekiliyor...")
 
-# Reddit'in doğrudan JSON kanalı. RSS'den bin kat daha sağlamdır.
-# /new.json?limit=5 diyerek en taze 5 gönderiyi istiyoruz.
-url = "https://www.reddit.com/r/Osho/new.json?limit=5"
+# RSS-Bridge'in halka açık bir örneği (Tamamen ücretsiz ve sınırsız)
+url = "https://rss-bridge.org/bridge01/?action=display&bridge=Reddit&context=subreddit&subreddit=Osho&format=Xml"
 
 headers = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
 }
 
 sonuclar = []
 
 try:
-    response = requests.get(url, headers=headers, timeout=15)
+    # Şimdi Reddit değil, RSS-Bridge'e bağlanıyoruz
+    response = requests.get(url, headers=headers, timeout=20)
     response.raise_for_status()
-    data = response.json()
     
-    # Reddit'in JSON yapısı: data -> children -> [her bir gönderi]
-    posts = data['data']['children']
-    
-    for post in posts:
-        p_data = post['data']
-        baslik = p_data.get('title', 'Başlıksız')
-        link = f"https://www.reddit.com{p_data.get('permalink', '')}"
-        ozet = p_data.get('selftext', '')[:500] # Gönderi içeriği
+    root = ET.fromstring(response.content)
+    items = root.findall('.//item')
+
+    for item in items[:5]:
+        baslik = item.find('title').text if item.find('title') is not None else "Başlıksız"
+        link = item.find('link').text if item.find('link') is not None else ""
+        ozet = item.find('description').text if item.find('description') is not None else ""
         
-        # Yapay Zeka özetlemesi
-        prompt = f"Şu Reddit paylaşımını profesyonelce özetle: '{baslik}'. İçerik: {ozet}. 3-4 cümlelik temiz bir metin yaz."
+        # Yapay zekaya gönder
+        prompt = f"Reddit paylaşımını özetle: Başlık: '{baslik}'. İçerik: {ozet[:300]}. 3 cümlelik, sade bir özet yaz."
         
         try:
             ai_cevap = model.generate_content(prompt)
@@ -43,17 +42,12 @@ try:
                 "icerik": ai_cevap.text.strip(),
                 "tarih": "Reddit"
             })
-            print(f"Eklendi: {baslik}")
-        except Exception as e:
-            print(f"AI Hatası: {e}")
+        except Exception:
             sonuclar.append({"baslik": baslik, "link": link, "icerik": "Özet alınamadı.", "tarih": "Reddit"})
 
 except Exception as e:
-    print(f"Kritik Hata: {e}")
-    sonuclar.append({"baslik": "Hata", "link": "#", "icerik": f"Veri çekilemedi: {str(e)}", "tarih": "Hata"})
+    print(f"Hata: {e}")
+    sonuclar.append({"baslik": "Hata", "link": "#", "icerik": f"RSS-Bridge hatası: {str(e)}", "tarih": "Hata"})
 
-# JSON dosyasına yaz
 with open('haberler.json', 'w', encoding='utf-8') as f:
     json.dump(sonuclar, f, ensure_ascii=False, indent=4)
-
-print("İşlem tamam!")
