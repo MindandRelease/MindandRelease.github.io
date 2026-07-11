@@ -1,45 +1,36 @@
 import os, json, requests
-from bs4 import BeautifulSoup
 import google.generativeai as genai
 
+# Şifremizi alıyoruz
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
 genai.configure(api_key=GEMINI_API_KEY)
 model = genai.GenerativeModel('gemini-1.5-flash')
 
-print("Google Haberler'de arama yapılıyor...")
+print("RSS köprüsü üzerinden Google Haberler çekiliyor...")
 
-# Terminalden çalıştığını teyit ettiğimiz Google RSS linki
-url = "https://news.google.com/rss/search?q=osho+when:3d&hl=en-US&gl=US&ceid=US:en"
+# Terminalde çalışan Google RSS linkimiz
+rss_url = "https://news.google.com/rss/search?q=osho+when:3d&hl=en-US&gl=US&ceid=US:en"
 
-headers = {
-    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
-}
+# GitHub'ın IP engeline takılmamak için ücretsiz rss2json köprüsünü kullanıyoruz
+response = requests.get("https://api.rss2json.com/v1/api.json", params={"rss_url": rss_url})
+data = response.json()
+items = data.get('items', [])
 
-response = requests.get(url, headers=headers)
-soup = BeautifulSoup(response.content, features="xml")
-items = soup.findAll('item')
+if not items:
+    print("Uyarı: Haber bulunamadı.")
 
 sonuclar = []
 
+# En güncel 5 haberi al
 for item in items[:5]:
-    baslik = item.title.text
-    link = item.link.text
-    tarih = item.pubDate.text
-    
-    tam_metin = ""
-    try:
-        sayfa = requests.get(link, headers=headers, timeout=10)
-        sayfa_soup = BeautifulSoup(sayfa.content, 'html.parser')
-        tam_metin = " ".join([p.text for p in sayfa_soup.find_all('p')])
-    except Exception:
-        pass # Hata verirse sessizce geç, çünkü B planımız var
+    baslik = item.get('title', '')
+    link = item.get('link', '')
+    tarih = item.get('pubDate', '')
+    ozet = item.get('description', '')
 
-    # B PLANIMIZ: Eğer metni başarıyla çekerse metni kullanarak, 
-    # çekemezse SADECE başlığı kullanarak yapay zekaya haber yazdır.
-    if len(tam_metin) > 150:
-        prompt = f"Aşağıdaki haberi kaynak metne sadık kalarak, sanki profesyonel bir bültenmiş gibi baştan yaz. Sadece haber içeriğini ver.\n\nBaşlık: {baslik}\nMetin: {tam_metin[:3000]}"
-    else:
-        prompt = f"Elimde sadece şu haber başlığı var: '{baslik}'. Sadece bu başlığa dayanarak, sanki bir haber bülteni sunuyormuş gibi profesyonel, 3-4 cümlelik bir haber özeti metni yaz. Haberin içeriğini mantıksal olarak tahmin et."
+    # Sitelere tek tek girmek yerine, elimizdeki güçlü haber özeti ve başlıkla
+    # Yapay Zekaya profesyonel bir tam metin yazdırıyoruz.
+    prompt = f"Elimde şu haberin başlığı ve kısa özeti var.\nBaşlık: '{baslik}'\nÖzet: '{ozet}'\nBu bilgilere dayanarak, haberi okuyan kişiye bilgi verecek profesyonel, 3-4 cümlelik temiz bir haber metni oluştur."
 
     try:
         ai_cevap = model.generate_content(prompt)
