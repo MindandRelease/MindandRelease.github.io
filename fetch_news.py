@@ -6,12 +6,11 @@ GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
 genai.configure(api_key=GEMINI_API_KEY)
 model = genai.GenerativeModel('gemini-1.5-flash')
 
-print("Bing Haberler'de arama yapılıyor...")
+print("Google Haberler'de arama yapılıyor...")
 
-# Bing News RSS: Doğrudan haber sitelerinin orijinal linklerini verir (Google gibi araya girmez)
-url = "https://www.bing.com/news/search?q=osho&format=rss"
+# Terminalden çalıştığını teyit ettiğimiz Google RSS linki
+url = "https://news.google.com/rss/search?q=osho+when:3d&hl=en-US&gl=US&ceid=US:en"
 
-# Haber siteleri botumuzu engellemesin diye kendimizi normal bir tarayıcı (Chrome) gibi gösteriyoruz
 headers = {
     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
 }
@@ -27,22 +26,21 @@ for item in items[:5]:
     link = item.link.text
     tarih = item.pubDate.text
     
-    # Bazı RSS'lerde description olmayabilir, sistem çökmesin diye kontrol ediyoruz
-    ozet = item.description.text if item.description else "" 
-
     tam_metin = ""
     try:
-        # Haberin orijinal sitesine git ve metni al
         sayfa = requests.get(link, headers=headers, timeout=10)
         sayfa_soup = BeautifulSoup(sayfa.content, 'html.parser')
         tam_metin = " ".join([p.text for p in sayfa_soup.find_all('p')])
-    except Exception as e:
-        print(f"Haber sitesine girilemedi, sadece özetle yetinilecek: {link}")
+    except Exception:
+        pass # Hata verirse sessizce geç, çünkü B planımız var
 
-    # <150 karakter engelini kaldırdık. 
-    # Site engellese bile elimizdeki başlık ve kısa özetle yapay zekaya haber yazdıracağız.
-    prompt = f"Aşağıdaki bilgileri kullanarak, sanki profesyonel bir haber bülteniymiş gibi temiz bir metin oluştur. Sadece haberin metnini ver, başka açıklama yapma.\n\nBaşlık: {baslik}\nKısa Özet: {ozet}\nDetaylı Metin (varsa): {tam_metin[:3000]}"
-    
+    # B PLANIMIZ: Eğer metni başarıyla çekerse metni kullanarak, 
+    # çekemezse SADECE başlığı kullanarak yapay zekaya haber yazdır.
+    if len(tam_metin) > 150:
+        prompt = f"Aşağıdaki haberi kaynak metne sadık kalarak, sanki profesyonel bir bültenmiş gibi baştan yaz. Sadece haber içeriğini ver.\n\nBaşlık: {baslik}\nMetin: {tam_metin[:3000]}"
+    else:
+        prompt = f"Elimde sadece şu haber başlığı var: '{baslik}'. Sadece bu başlığa dayanarak, sanki bir haber bülteni sunuyormuş gibi profesyonel, 3-4 cümlelik bir haber özeti metni yaz. Haberin içeriğini mantıksal olarak tahmin et."
+
     try:
         ai_cevap = model.generate_content(prompt)
         sonuclar.append({
@@ -51,11 +49,10 @@ for item in items[:5]:
             "icerik": ai_cevap.text.strip(),
             "tarih": tarih
         })
-        print(f"Başarıyla işlendi: {baslik}")
+        print(f"Eklendi: {baslik}")
     except Exception as e:
         print(f"Yapay Zeka Hatası ({baslik}): {e}")
 
-# Dosyayı kaydet
 with open('haberler.json', 'w', encoding='utf-8') as f:
     json.dump(sonuclar, f, ensure_ascii=False, indent=4)
     
